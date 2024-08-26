@@ -26,6 +26,7 @@ OPERATION_MODE=$DRY_RUN
 
 
 # Execute command
+# TODO: Update path to script (if required)
 cd $HOME/docker-apps/plex-media-server/blackhole-scripts
 
 ##################################################
