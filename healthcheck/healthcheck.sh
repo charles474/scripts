@@ -3,7 +3,6 @@
 URLS=(
 "https://www.google.com"
 "https://www.pinging.net"
-"https://docker.charleshosted.com"
 )
 
 # Pick a random url from the list
