@@ -12,7 +12,7 @@ services:
       - ${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_SONARR_PATH}:/${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_SONARR_PATH}
       - ${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_RADARR_PATH}:/${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_RADARR_PATH}
       - ./logs:/app/logs
-      - ./healthcheck:/healthcheck
+      - ./healthcheck/blackhole:/healthcheck
       - /mnt:/mnt:rslave
     env_file:
       - .env
@@ -42,7 +42,7 @@ services:
       - ${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_SONARR_PATH}:/${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_SONARR_PATH}
       - ${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_RADARR_PATH}:/${BLACKHOLE_BASE_WATCH_PATH}/${BLACKHOLE_RADARR_PATH}
       - ./logs:/app/logs
-      - ./healthcheck:/healthcheck
+      - ./healthcheck/blackhole:/healthcheck
       - /mnt:/mnt:rslave
     env_file:
       - .env
