@@ -162,6 +162,14 @@ async def processTorrent(torrent: TorrentBase, file: TorrentFileInfo, arr: Arr) 
                 torrent.delete()
                 return False
         elif status == torrent.STATUS_DOWNLOADING:
+            # Check if timeout has been reached
+            print(f"Checking torrent download timeout limit: {count} of {blackhole['waitForTorrentTimeout']}.")
+            if count >= blackhole['waitForTorrentTimeout']:
+                print(f"Torrent timeout: {file.fileInfo.filenameWithoutExt} - {status}")
+                discordError("Torrent timeout", f"{file.fileInfo.filenameWithoutExt} - {status}")
+                torrent.delete()
+                return False
+
             # Send progress to arr
             progress = info['progress']
             print(f"Progress: {progress:.2f}%")
