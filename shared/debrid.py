@@ -249,6 +249,11 @@ class RealDebrid(TorrentBase):
         self.print('only largest file:', self.onlyLargestFile)
         self.print('largest file:', largestMediaFile)
 
+        # Check if the largest file is a sample file, seems to be a pattern when torrent is zipped/ rarrer.
+        if largestMediaFile['path'].startswith('/Sample/'):
+            self.print('The largest file is a sample file. Failing grab attempt!')
+            return False
+
         if self.failIfNotCached and not self.incompatibleHashSize:
             targetFileIds = {largestMediaFileId} if self.onlyLargestFile else mediaFileIds
             if not any(set(fileGroup.keys()) == targetFileIds for fileGroup in self._instantAvailability):
