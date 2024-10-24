@@ -27,7 +27,7 @@ OPERATION_MODE=$DRY_RUN
 ###################################################################################################
 
 # TODO: Update path to script (if required)
-cd $HOME/docker-apps/plex-media-server/blackhole-scripts
+cd $HOME/docker-apps/media-server/blackhole-scripts
 
 ##################################################
 # RADARR EXECUTION                               #
