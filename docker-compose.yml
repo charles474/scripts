@@ -15,6 +15,7 @@ services:
       - ./logs:/app/logs
       - ./healthcheck/blackhole:/healthcheck
       - /mnt:/mnt:rslave
+      - /data:/data:rslave
     env_file:
       - .env
     environment:
@@ -46,6 +47,7 @@ services:
       - ./logs:/app/logs
       - ./healthcheck/blackhole:/healthcheck
       - /mnt:/mnt:rslave
+      - /data:/data:rslave
     env_file:
       - .env
     environment:
