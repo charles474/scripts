@@ -57,7 +57,7 @@ services:
       - UMASK=002
       - TZ=Europe/London
     restart: unless-stopped
-    command: python repair.py --mode symlink --no-confirm
+    command: python repair.py --mode symlink --include-unmonitored --no-confirm
     healthcheck:
       test: /bin/bash "/healthcheck/healthcheck.sh"
       interval: 120s
