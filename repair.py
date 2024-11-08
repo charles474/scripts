@@ -30,6 +30,7 @@ parser.add_argument('--repair-interval', type=str, default=repair['repairInterva
 parser.add_argument('--run-interval', type=str, default=repair['runInterval'], help='Optional interval in smart format (e.g. 1w2d3h4m5s) to run the repair process.')
 parser.add_argument('--mode', type=str, choices=['symlink', 'file'], default='symlink', help='Choose repair mode: `symlink` or `file`. `symlink` to repair broken symlinks and `file` to repair missing files.')
 parser.add_argument('--include-unmonitored', action='store_true', help='Include unmonitored media in the repair process')
+parser.add_argument('--safety-check-script', type=str, default=repair['safetyCheckScript'], help='Python code to be evaluated and return boolean for whether torrent mount is working or not. mountTorrentsPath will be replaced by Realdebrid/Torbox mount path.')
 args = parser.parse_args()
 
 _print = print
@@ -54,6 +55,15 @@ except Exception as e:
     print(f"Invalid interval format for run interval: {args.run_interval}")
     exit(1)
 
+def safety_check(mountTorrentsPath):
+    try:
+        print(f"Checking torrent mount or evaluating safety check script for mount path [{mountTorrentsPath}]")
+        safety_check_passed = eval(args.safety_check_script, {"os": os, "mountTorrentsPath": mountTorrentsPath})
+        return safety_check_passed
+    except Exception as e:
+        print(f"Error checking torrent mount or evaluating safety check script [{safety_check_script}] for mount path [{mountTorrentsPath}] : exception: {e}")
+        return False
+
 def main():
     print("Collecting media...")
     sonarr = Sonarr()
@@ -67,6 +77,15 @@ def main():
             getItems = lambda media, childId: arr.getFiles(media=media, childId=childId) if args.mode == 'symlink' else arr.getHistory(media=media, childId=childId, includeGrandchildDetails=True)
             childrenIds = media.childrenIds if args.include_unmonitored else media.monitoredChildrenIds
 
+            # perform a "Safety check" to make sure that the torrents folder is mounted to prevent deleting everything in *arrs
+            # we do this inside of the loop because the mount could drop at any time; so, best to check with each iteration
+            if ((realdebrid['enabled'] and not safety_check(realdebrid['mountTorrentsPath'])) or (torbox['enabled'] and not safety_check(torbox['mountTorrentsPath']))):
+                print(f"Safety check failed: couldn't verify torrent folder is mounted")
+                discordError(f"[{args.mode}] An error occurred while processing {media.title}: Safety check failed: couldn't verify torrent folder is mounted")
+                if repairIntervalSeconds > 0:
+                    time.sleep(repairIntervalSeconds)
+                continue
+
             for childId in childrenIds:
                 brokenItems = []
                 childItems = list(getItems(media=media, childId=childId))
@@ -77,7 +96,7 @@ def main():
                         if os.path.islink(fullPath):
                             destinationPath = os.readlink(fullPath)
                             if ((realdebrid['enabled'] and destinationPath.startswith(realdebrid['mountTorrentsPath']) and not os.path.exists(destinationPath)) or 
-                               (torbox['enabled'] and destinationPath.startswith(torbox['mountTorrentsPath']) and not os.path.exists(os.path.realpath(fullPath)))):
+                            (torbox['enabled'] and destinationPath.startswith(torbox['mountTorrentsPath']) and not os.path.exists(os.path.realpath(fullPath)))):
                                 brokenItems.append(os.path.realpath(fullPath))
                     else:  # file mode
                         if item.reason == 'MissingFromDisk' and item.parentId not in media.fullyAvailableChildrenIds:
