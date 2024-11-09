@@ -1,9 +1,7 @@
 ---
 services:
-  blackhole:
-    build:
-      context: .
-      dockerfile: Dockerfile.blackhole
+  blackhole:    
+    image: charles474/blackhole:latest
     pull_policy: always
     container_name: blackhole
     labels:
@@ -27,6 +25,7 @@ services:
       - UMASK=002
       - TZ=Europe/London
     restart: unless-stopped
+    command: python blackhole_watcher.py
     healthcheck:
       test: /bin/bash "/healthcheck/healthcheck.sh"
       interval: 120s
@@ -35,9 +34,7 @@ services:
       timeout: 15s
 
   blackhole_repair:
-    build:
-      context: .
-      dockerfile: Dockerfile.scripts
+    image: charles474/blackhole:latest
     pull_policy: always
     container_name: blackhole_repair
     labels:
