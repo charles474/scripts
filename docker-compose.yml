@@ -1,7 +1,9 @@
 ---
 services:
   blackhole:
-    image: charles474/blackhole:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.blackhole
     pull_policy: always
     container_name: blackhole
     labels:
@@ -33,7 +35,9 @@ services:
       timeout: 15s
 
   blackhole_repair:
-    image: charles474/blackhole:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.scripts
     pull_policy: always
     container_name: blackhole_repair
     labels:
