@@ -5,6 +5,7 @@ services:
     pull_policy: always
     container_name: blackhole
     labels:
+      com.docker-tc.enabled: 0
       autoheal-app: true
     user: "1000:1000"
     volumes:
@@ -38,6 +39,7 @@ services:
     pull_policy: always
     container_name: blackhole_repair
     labels:
+      com.docker-tc.enabled: 0
       autoheal-app: true
     user: "1000:1000"
     volumes:
