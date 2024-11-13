@@ -204,3 +204,12 @@ def checkRequiredEnvs(requiredEnvs):
                 previousSuccess = True
         else:
             previousSuccess = True
+
+def path_starts_with(path, token):
+    return path.startswith(token)
+
+def path_contains_any(path, tokens):
+    return any(str(item) in path for item in tokens)
+
+def is_sample(path):
+    return path_starts_with(path, '/Sample/') or path_contains_any(path, ['/Sample/', '.Sample', '.sample', '-sample'])

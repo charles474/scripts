@@ -8,7 +8,7 @@ from urllib.parse import urljoin
 from datetime import datetime
 from shared.discord import discordUpdate
 from shared.requests import retryRequest
-from shared.shared import realdebrid, torbox, mediaExtensions, checkRequiredEnvs
+from shared.shared import realdebrid, torbox, mediaExtensions, checkRequiredEnvs, is_sample
 
 def validateDebridEnabled():
     if not realdebrid['enabled'] and not torbox['enabled']:
@@ -250,8 +250,7 @@ class RealDebrid(TorrentBase):
         self.print('largest file:', largestMediaFile)
 
         # Check if the largest file is a sample file, seems to be a pattern when torrent is zipped/ rarrer.
-        if (largestMediaFile['path'].startswith('/Sample/') or '/Sample/' in largestMediaFile['path']
-                or '.sample' in largestMediaFile['path'] or '.Sample' in largestMediaFile['path'] or '-sample' in largestMediaFile['path']):
+        if is_sample(largestMediaFile['path']):
             self.print('The largest file is a sample file. Failing grab attempt!')
             return False
 
