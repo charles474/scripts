@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 # import urllib
 from shared.discord import discordError, discordUpdate
-from shared.shared import realdebrid, torbox, blackhole, plex, checkRequiredEnvs
+from shared.shared import realdebrid, torbox, blackhole, plex, checkRequiredEnvs, to_formatted_time
 from shared.arr import Arr, Radarr, Sonarr
 from shared.debrid import TorrentBase, RealDebridTorrent, RealDebridMagnet, TorboxTorrent, TorboxMagnet
 
@@ -162,8 +162,9 @@ async def processTorrent(torrent: TorrentBase, file: TorrentFileInfo, arr: Arr) 
                 torrent.delete()
                 return False
         elif status == torrent.STATUS_DOWNLOADING:
+            print(f"TORRENT: {file.fileInfo.filenameWithoutExt}. ELAPSED TIME: {to_formatted_time(count)}. DOWNLOAD TIME LIMIT: {to_formatted_time(blackhole['waitForTorrentTimeout'])}.")
+
             # Check if timeout has been reached
-            print(f"Checking torrent download timeout limit: {count} of {blackhole['waitForTorrentTimeout']}.")
             if count >= blackhole['waitForTorrentTimeout']:
                 print(f"Torrent timeout: {file.fileInfo.filenameWithoutExt} - {status}")
                 discordError("Torrent timeout", f"{file.fileInfo.filenameWithoutExt} - {status}")

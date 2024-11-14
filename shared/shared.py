@@ -1,5 +1,7 @@
 import os
 import re
+from time import strftime
+from time import gmtime
 from environs import Env
 
 env = Env()
@@ -213,3 +215,6 @@ def path_contains_any(path, tokens):
 
 def is_sample(path):
     return path_starts_with(path, '/Sample/') or path_contains_any(path, ['/Sample/', '.Sample', '.sample', '-sample'])
+
+def to_formatted_time(time_in_secs):
+    return strftime("%H:%M:%S", gmtime(time_in_secs))
