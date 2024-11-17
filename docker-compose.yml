@@ -2,7 +2,6 @@
 services:
   blackhole:    
     image: charles474/blackhole:latest
-    pull_policy: always
     container_name: blackhole
     labels:
       autoheal-app: true
@@ -35,7 +34,6 @@ services:
 
   blackhole_repair:
     image: charles474/blackhole:latest
-    pull_policy: always
     container_name: blackhole_repair
     labels:
       autoheal-app: true
