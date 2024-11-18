@@ -207,14 +207,11 @@ def checkRequiredEnvs(requiredEnvs):
         else:
             previousSuccess = True
 
-def path_starts_with(path, token):
-    return path.startswith(token)
-
 def path_contains_any(path, tokens):
     return any(str(item) in path for item in tokens)
 
-def is_sample(path):
-    return path_starts_with(path, '/Sample/') or path_contains_any(path, ['/Sample/', '.Sample', '.sample', '-sample'])
+def is_sample(path: str):
+    return path_contains_any(path.lower(), ['/sample/', '.sample', '-sample'])
 
 def to_formatted_time(time_in_secs):
     return strftime("%H:%M:%S", gmtime(time_in_secs))
