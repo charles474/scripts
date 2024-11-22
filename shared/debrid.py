@@ -177,12 +177,12 @@ class RealDebrid(TorrentBase):
             torrentHash = self.getHash()
             self.print('hash:', torrentHash)
 
-            if len(torrentHash) != 40:
+            if len(torrentHash) != 40 or True:
                 self.incompatibleHashSize = True
                 return True
 
             instantAvailabilityRequest = retryRequest(
-                lambda: requests.get(urljoin(realdebrid['host'], f"torrents/instantAvailability/{torrentHash}"), headers=self.headers),
+                lambda: requests.get(urljoin(realdebrid['host'], f"torrents/instantAvailability/{torrentHash}"), headers=self.headers), # endpoint has now been removed
                 print=self.print
             )
             if instantAvailabilityRequest is None:
