@@ -7,12 +7,12 @@ DRY_RUN="dry-run"
 
 # TODO: Update list of directories or leave empty
 RADARR_DIRECTORIES=(
-"Caravaggios.Shadow.2022.BDREMUX.1080p.seleZen.mkv"
+""
 )
 
 # TODO: Update list of directories or leave empty
 SONARR_DIRECTORIES=(
-"Beverly Hills, 90210"
+""
 )
 
 # TODO: Update operation mode
@@ -27,7 +27,7 @@ OPERATION_MODE=$DRY_RUN
 ###################################################################################################
 
 # TODO: Update path to script (if required)
-cd $HOME/docker-apps/media-server/blackhole-scripts
+cd $HOME/docker-apps/media-server/blackhole
 
 ##################################################
 # RADARR EXECUTION                               #
